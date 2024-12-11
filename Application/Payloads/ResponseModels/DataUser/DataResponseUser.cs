@@ -11,6 +11,7 @@ namespace Application.Payloads.ResponseModels.DataUser
         public DateTime CreateTime { get; set; }
         public DateTime? UpdateTime { get; set; }
         public string Avatar { get; set; } = String.Empty;
+        public string Instruction {  get; set; } = String.Empty;
         public string UserStatus { get; set; } = ConstantEnums.UserStatus.UnActived.ToString();
     }
 }

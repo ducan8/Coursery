@@ -16,6 +16,7 @@ namespace Domain.Entities
         public ConstantEnums.UserStatus UserStatus { get; set; } = ConstantEnums.UserStatus.UnActived;
         public bool IsActive { get; set; }
         public string Address { get; set; } = string.Empty;
+        public string Instruction {  get; set; } = String.Empty;
 
         public virtual ICollection<Certificate>? Certificates { get; set; } 
         public virtual ICollection<Permission>? Permissions { get; set; } 

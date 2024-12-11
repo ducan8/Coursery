@@ -1,6 +1,7 @@
 ﻿using Application.Payloads.RequestModels.DataCourse;
 using Application.Payloads.RequestModels.DataTeacher;
 using Application.Payloads.RequestModels.DataUser;
+using Application.Payloads.ResponseModels.DataCourse;
 using Application.Payloads.ResponseModels.DataUser;
 using AutoMapper;
 using Domain.Entities;
@@ -21,6 +22,10 @@ namespace Application.Payloads.Mappers
             CreateMap<DataRequestCourse,  Course>();
 
             CreateMap<DataRequestSubject, Subject>();
+
+            CreateMap<Course, DataResponseCourse>();
+            CreateMap<Subject, DataResponseSubject>();
+            CreateMap<SubjectDetail, DataResponseSubjectDetail>();
 
         }
     }

@@ -10,5 +10,6 @@ namespace Domain.IRepositories
         Task AddRolesToUserAsync(User user, IList<string> roles);
         Task<IEnumerable<string>> GetRolesOfUserAsync(User user);
         Task DeleteRolesAsync(User user, List<string> roles);
+        Task<IEnumerable<Certificate>> GetCertificatesAsync(Guid userId);
     }
 }

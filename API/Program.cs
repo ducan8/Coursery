@@ -29,6 +29,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
+builder.Services.AddScoped<ICourseService, CourseService>();
 
 //user repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
@@ -39,12 +40,16 @@ builder.Services.AddScoped<IBaseRepository<Permission>, BaseRepository<Permissio
 builder.Services.AddScoped<IBaseRepository<Role>, BaseRepository<Role>>();
 builder.Services.AddScoped<IBaseRepository<Image>, BaseRepository<Image>>();
 builder.Services.AddScoped<IBaseRepository<Certificate>, BaseRepository<Certificate>>();
+builder.Services.AddScoped<IBaseRepository<Subject>, BaseRepository<Subject>>();
+builder.Services.AddScoped<IBaseRepository<Course>, BaseRepository<Course>>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 
 
 //builder.Services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddCors();
 
 var emailConfig = builder.Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>();
 builder.Services.AddSingleton(emailConfig);

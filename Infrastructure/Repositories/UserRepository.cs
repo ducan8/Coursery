@@ -95,7 +95,14 @@ namespace Infrastructure.Repositories
             return user;
         }
 
+        public async Task<IEnumerable<Certificate>> GetCertificatesAsync(Guid userId)
+        {
+            var user = await _context.Users.Include(x => x.Certificates).FirstOrDefaultAsync(x => x.Id == userId);
 
+            if (user == null) return null;
+            if(user.Certificates.Any()) return user.Certificates;
+            return null;
+        }
 
         #region private method
         private Task<bool> CompareStringAsync(string str1, string str2)

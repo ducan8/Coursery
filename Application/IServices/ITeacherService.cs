@@ -19,7 +19,6 @@ namespace Application.IServices
         Task<ResponseObject<string>> DeleteCourse(Guid courseId);
 
 
-        Task<ResponseObject<IEnumerable<Course>>> GetCourseWithAllSubject(Guid courseId);
         Task<ResponseObject<string>> CreateSubject(Guid courseId, DataRequestSubject subject);
         Task<ResponseObject<string>> UpdateSubject(Guid subjectId, DataRequestSubject subject);
         Task<ResponseObject<string>> DeleteSubject(Guid subjectId);

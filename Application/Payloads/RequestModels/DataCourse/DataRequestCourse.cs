@@ -9,8 +9,8 @@ namespace Application.Payloads.RequestModels.DataCourse
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         
-        [Required(ErrorMessage = "Introduce is required")]
-        public string Introduce { get; set; } 
+        [Required(ErrorMessage = "Introduction is required")]
+        public string Introduction { get; set; } 
 
         public IFormFile? ImageCourse { get; set; } 
 

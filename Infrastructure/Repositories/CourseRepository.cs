@@ -14,11 +14,15 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Course>> GetCourse(Guid courseId)
+        public async Task<Course> GetCourse(Guid courseId)
         {
-            var listSubjects = await _context.Courses.Include(x => x.Subjects).ThenInclude(x => x.SubjectDetails).Where(x => x.Id == courseId).ToListAsync();
+            var course = await _context.Courses
+                                        .Include(x => x.Creator)
+                                       .Include(x => x.Subjects)
+                                       .ThenInclude(x => x.SubjectDetails)
+                                       .FirstOrDefaultAsync(x => x.Id == courseId);
 
-            return listSubjects;
+            return course;
         }
     }
 }

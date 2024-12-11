@@ -606,6 +606,14 @@ namespace Application.Services
             }
 
             var userRoles = await _userRepository.GetRolesOfUserAsync(user);
+            var certificates = await _userRepository.GetCertificatesAsync(user.Id);
+            if(certificates != null)
+            {
+                foreach (var cert in certificates)
+                {
+                    claims.Add(new Claim("Certificate", cert.Name));
+                }
+            }
 
             foreach (var role in userRoles)
             {

@@ -5,6 +5,6 @@ namespace Domain.IRepositories
 {
     public interface ICourseRepository
     {
-        Task<IEnumerable<Course>> GetCourse(Guid courseId);
+        Task<Course> GetCourse(Guid courseId);
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using Application.IServices;
+﻿using Application.IServices;
 using Application.Payloads.RequestModels.DataCourse;
 using Application.Payloads.RequestModels.DataTeacher;
 using Application.Payloads.Response;
@@ -60,12 +59,19 @@ namespace Application.Services
                     Message = "You don't have permisison to do this action.",
                     Data = null
                 };
+                if(string.IsNullOrEmpty(user.FindFirst("Certificate").Value)) return new ResponseObject<string>
+                {
+                    StatusCode = StatusCodes.Status403Forbidden,
+                    Message = "You don't have certificate to create a course yet.",
+                    Data = null
+                };
 
                 Course course = _mapper.Map<Course>(newCourse);
                 course.CreatorId = Guid.Parse(user.FindFirst("Id")!.Value);
                 if(course.ImageCourse != null)
                 {
                     string image = await _photoService.AddPhotoAsync(newCourse.ImageCourse);
+                    course.ImageCourse = image;
                 }
 
                 course = await _baseCourseRepository.CreateAsync(course);
@@ -116,16 +122,18 @@ namespace Application.Services
                     string image = await _photoService.AddPhotoAsync(updateCourse.ImageCourse);
                     courseInDB.ImageCourse = image;
                 }
+
                 courseInDB.Code = updateCourse.Code;
                 courseInDB.Name = updateCourse.Name;
-                courseInDB.Introduce = updateCourse.Introduce;
+                courseInDB.Introduction = updateCourse.Introduction;
                 courseInDB.Price = updateCourse.Price;
+                courseInDB.UpdateTime = DateTime.Now;
 
                 await _baseCourseRepository.UpdateAsync(courseInDB);
 
                 return new ResponseObject<string>
                 {
-                    StatusCode = StatusCodes.Status201Created,
+                    StatusCode = StatusCodes.Status200OK,
                     Message = "Updated the course successfully",
                     Data = ""
                 };
@@ -328,46 +336,7 @@ namespace Application.Services
         }
 
 
-        public async Task<ResponseObject<IEnumerable<Course>>> GetCourseWithAllSubject(Guid courseId)
-        {
-            try
-            {
-                var currentUser = _authService.GetCurrentUser();
-
-                if (!currentUser.IsInRole("Teacher")) return new ResponseObject<IEnumerable<Course>>
-                {
-                    StatusCode = StatusCodes.Status403Forbidden,
-                    Message = "You don't have permisison to do this action.",
-                    Data = null
-                };
-
-                var listCourse = await _courseRepository.GetCourse(courseId);
-
-                if (listCourse == null) return new ResponseObject<IEnumerable<Course>>
-                {
-                    StatusCode = StatusCodes.Status404NotFound,
-                    Message = "You don't have any subject.",
-                    Data = null
-                };
-
-                return new ResponseObject<IEnumerable<Course>>
-                {
-                    StatusCode = StatusCodes.Status200OK,
-                    Message = "Get all courses successfully.",
-                    Data = listCourse
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new ResponseObject<IEnumerable<Course>>
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError,
-                    Message = ex.Message,
-                    Data = null
-                };
-            }
-        }
+        
 
         public async Task<ResponseObject<string>> CreateSubject(Guid courseId, DataRequestSubject subject)
         {
