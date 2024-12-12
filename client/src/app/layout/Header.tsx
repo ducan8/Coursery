@@ -67,7 +67,7 @@ export default function Header() {
         </Box>
 
         {/* group button */}
-        <IconButton size="large" sx={{ mr: 2 }}>
+        <IconButton component={Link} to="/cart" size="large" sx={{ mr: 2 }}>
           <Badge badgeContent="4" color="secondary">
             <ShoppingCart sx={{ color: "#2D2F31" }} />
           </Badge>
@@ -75,14 +75,14 @@ export default function Header() {
         <Button
           variant="outlined"
           component={Link}
-          to="/log_in"
+          to="/log-in"
           sx={{ border: "1px solid #2D2F31", color: "#2D2F31", marginLeft: 2 }}
         >
           Log in
         </Button>
         <Button
           component={Link}
-          to="/sign_up"
+          to="/sign-up"
           variant="contained"
           sx={{ backgroundColor: "#2D2F31", color: "white", marginLeft: 2 }}
         >

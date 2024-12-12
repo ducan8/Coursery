@@ -4,15 +4,21 @@ import CourseList from "./CourseList";
 import Slideshow from "./Slideshow";
 import { Box, Container, Typography } from "@mui/material";
 import "./index.css";
+import agent from "../../app/api/agen";
+import Loading from "./Loading";
 
 export default function catalog() {
   const [courses, setCourses] = useState<Course[] | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/course/GetAllCourse")
-      .then((res) => res.json())
-      .then((res) => setCourses(res.data));
+    agent.Catalog.list()
+      .then((courses) => setCourses(courses.data))
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) return <Loading />;
+
   return (
     <div>
       <Slideshow />
@@ -31,6 +37,7 @@ export default function catalog() {
         <Typography variant="h4" component="h4" color="textPrimary">
           Learners are viewing
         </Typography>
+
         <CourseList courses={courses} />
       </Container>
     </div>

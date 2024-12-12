@@ -530,10 +530,7 @@ namespace Application.Services
             }
         }
 
-        public ClaimsPrincipal GetCurrentUser()
-        {
-            return _contextAccessor.HttpContext.User;
-        }
+        
 
 
 

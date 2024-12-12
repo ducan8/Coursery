@@ -28,6 +28,7 @@ export default function Content({ course }: Props) {
               ? course.subjects.map((subject: any) => {
                   return (
                     <TreeItem
+                      key={subject.id}
                       itemId={subject.id}
                       sx={{
                         border: "inherit",

@@ -1,13 +1,12 @@
-﻿
-
-using Application.Payloads.Response;
+﻿using Application.Payloads.Response;
 using Application.Payloads.ResponseModels.DataUser;
+using System.Security.Claims;
 
 namespace Application.IServices
 {
     public interface IUserService
     {
-        Task<ResponseObject<DataResponseUser>> GetCurrentUser();
+        ClaimsPrincipal GetCurrentUser();
         Task<ResponseObject<DataResponseUser>> GetUserById();
 
     }

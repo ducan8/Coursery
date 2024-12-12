@@ -16,7 +16,6 @@ namespace Application.IServices
         Task<ResponseObject<string>> CreateNewPassword(DataRequestUser_CreateNewPassword request);
         Task<ResponseObject<string>> AddRolesToUser(Guid userId, List<string> roles);
         Task<ResponseObject<string>> DeleteRoles(Guid userId, List<string> roles);
-        ClaimsPrincipal GetCurrentUser();
     }
 }
 

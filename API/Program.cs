@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application.Constants;
 using Application.Handle.HandleEmail;
 using Application.IServices;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
 builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<ICourseService, CourseService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 //user repository
 builder.Services.AddScoped<IBaseRepository<User>, BaseRepository<User>>();
@@ -81,6 +83,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

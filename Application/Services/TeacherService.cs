@@ -17,6 +17,7 @@ namespace Application.Services
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IAuthService _authService;
         private readonly IPhotoService _photoService;
+        private readonly IUserService _userService;
         private readonly IBaseRepository<Certificate> _baseCertificateRepository;
         private readonly IBaseRepository<User> _baseUserRepository;
         private readonly IBaseRepository<Image> _baseImageRepository;
@@ -28,17 +29,20 @@ namespace Application.Services
                                IHttpContextAccessor httpContextAccessor,
                                IAuthService authService,
                                IPhotoService photoService,
+                               IUserService userService,
                                IBaseRepository<Certificate> baseCertificateRepository,
                                IBaseRepository<User> baseUserRepository,
                                IBaseRepository<Image> baseImageRepository,
                                IBaseRepository<Course> baseCourseRepository,
-                               IBaseRepository<Subject> baseSubjectRepository, 
-                               ICourseRepository courseRepository)
+                               IBaseRepository<Subject> baseSubjectRepository,
+                               ICourseRepository courseRepository
+            )
         {
             _mapper = mapper;
             _contextAccessor = httpContextAccessor;
             _authService = authService;
             _photoService = photoService;
+            _userService = userService;
             _baseCertificateRepository = baseCertificateRepository;
             _baseUserRepository = baseUserRepository;
             _baseImageRepository = baseImageRepository;
@@ -51,7 +55,7 @@ namespace Application.Services
         {
             try
             {
-                var user = _authService.GetCurrentUser();
+                var user = _userService.GetCurrentUser();
 
                 if (!user.IsInRole("Teacher")) return new ResponseObject<string>
                 {
@@ -59,7 +63,7 @@ namespace Application.Services
                     Message = "You don't have permisison to do this action.",
                     Data = null
                 };
-                if(string.IsNullOrEmpty(user.FindFirst("Certificate").Value)) return new ResponseObject<string>
+                if (string.IsNullOrEmpty(user.FindFirst("Certificate").Value)) return new ResponseObject<string>
                 {
                     StatusCode = StatusCodes.Status403Forbidden,
                     Message = "You don't have certificate to create a course yet.",
@@ -68,7 +72,7 @@ namespace Application.Services
 
                 Course course = _mapper.Map<Course>(newCourse);
                 course.CreatorId = Guid.Parse(user.FindFirst("Id")!.Value);
-                if(course.ImageCourse != null)
+                if (course.ImageCourse != null)
                 {
                     string image = await _photoService.AddPhotoAsync(newCourse.ImageCourse);
                     course.ImageCourse = image;
@@ -99,7 +103,7 @@ namespace Application.Services
         {
             try
             {
-                var user = _authService.GetCurrentUser();
+                var user = _userService.GetCurrentUser();
 
                 if (!user.IsInRole("Teacher")) return new ResponseObject<string>
                 {
@@ -109,15 +113,15 @@ namespace Application.Services
                 };
 
                 var courseInDB = await _baseCourseRepository.GetByIdAsync(x => x.Id == courseId);
-                
-                if(courseInDB == null) return new ResponseObject<string>
+
+                if (courseInDB == null) return new ResponseObject<string>
                 {
                     StatusCode = StatusCodes.Status404NotFound,
                     Message = "The course doesn't exists.",
                     Data = null
                 };
 
-                if(updateCourse.ImageCourse != null)
+                if (updateCourse.ImageCourse != null)
                 {
                     string image = await _photoService.AddPhotoAsync(updateCourse.ImageCourse);
                     courseInDB.ImageCourse = image;
@@ -154,7 +158,7 @@ namespace Application.Services
         {
             try
             {
-                var currentUser = _authService.GetCurrentUser();
+                var currentUser = _userService.GetCurrentUser();
 
                 if (!currentUser.IsInRole("Teacher")) return new ResponseObject<IEnumerable<Course>>
                 {
@@ -195,7 +199,7 @@ namespace Application.Services
         {
             try
             {
-                var currentUser = _authService.GetCurrentUser();
+                var currentUser = _userService.GetCurrentUser();
 
                 if (!currentUser.Identity.IsAuthenticated)
                 {
@@ -253,7 +257,7 @@ namespace Application.Services
         {
             try
             {
-                var currentUser = _authService.GetCurrentUser();
+                var currentUser = _userService.GetCurrentUser();
 
                 if (!currentUser.IsInRole("Teacher")) return new ResponseObject<string>
                 {
@@ -336,13 +340,13 @@ namespace Application.Services
         }
 
 
-        
+
 
         public async Task<ResponseObject<string>> CreateSubject(Guid courseId, DataRequestSubject subject)
         {
             try
             {
-                var user = _authService.GetCurrentUser();
+                var user = _userService.GetCurrentUser();
 
                 if (!user.IsInRole("Teacher")) return new ResponseObject<string>
                 {
@@ -352,7 +356,7 @@ namespace Application.Services
                 };
 
                 var course = await _baseCourseRepository.GetByIdAsync(courseId);
-                if(course == null) return new ResponseObject<string>
+                if (course == null) return new ResponseObject<string>
                 {
                     StatusCode = StatusCodes.Status404NotFound,
                     Message = "Your course doesn't exists.",
@@ -387,7 +391,7 @@ namespace Application.Services
         {
             try
             {
-                var user = _authService.GetCurrentUser();
+                var user = _userService.GetCurrentUser();
 
                 if (!user.IsInRole("Teacher")) return new ResponseObject<string>
                 {
@@ -433,7 +437,7 @@ namespace Application.Services
         {
             try
             {
-                var currentUser = _authService.GetCurrentUser();
+                var currentUser = _userService.GetCurrentUser();
 
                 if (!currentUser.IsInRole("Teacher")) return new ResponseObject<string>
                 {
